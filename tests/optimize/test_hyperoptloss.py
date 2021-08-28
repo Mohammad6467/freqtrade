@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from freqtrade.exceptions import OperationalException
-from freqtrade.optimize.default_hyperopt_loss import ShortTradeDurHyperOptLoss
+from freqtrade.optimize.hyperopt_loss_short_trade_dur import ShortTradeDurHyperOptLoss
 from freqtrade.resolvers.hyperopt_resolver import HyperOptLossResolver
 
 
@@ -149,9 +149,9 @@ def test_sortino_loss_daily_prefers_higher_profits(default_conf, hyperopt_result
 
 def test_onlyprofit_loss_prefers_higher_profits(default_conf, hyperopt_results) -> None:
     results_over = hyperopt_results.copy()
-    results_over['profit_ratio'] = hyperopt_results['profit_ratio'] * 2
+    results_over['profit_abs'] = hyperopt_results['profit_abs'] * 2
     results_under = hyperopt_results.copy()
-    results_under['profit_ratio'] = hyperopt_results['profit_ratio'] / 2
+    results_under['profit_abs'] = hyperopt_results['profit_abs'] / 2
 
     default_conf.update({'hyperopt_loss': 'OnlyProfitHyperOptLoss'})
     hl = HyperOptLossResolver.load_hyperoptloss(default_conf)

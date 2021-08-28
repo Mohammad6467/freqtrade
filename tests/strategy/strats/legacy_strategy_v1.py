@@ -10,7 +10,7 @@ from freqtrade.strategy.interface import IStrategy
 # --------------------------------
 
 # This class is a sample. Feel free to customize it.
-class TestStrategyLegacy(IStrategy):
+class TestStrategyLegacyV1(IStrategy):
     """
     This is a test strategy using the legacy function headers, which will be
     removed in a future update.
@@ -31,7 +31,7 @@ class TestStrategyLegacy(IStrategy):
     # This attribute will be overridden if the config file contains "stoploss"
     stoploss = -0.10
 
-    # Optimal ticker interval for the strategy
+    # Optimal timeframe for the strategy
     # Keep the legacy value here to test compatibility
     ticker_interval = '5m'
 

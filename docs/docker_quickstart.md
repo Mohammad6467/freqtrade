@@ -10,11 +10,11 @@ Start by downloading and installing Docker CE for your platform:
 * [Windows](https://docs.docker.com/docker-for-windows/install/)
 * [Linux](https://docs.docker.com/install/)
 
-To simplify running freqtrade, please install [`docker-compose`](https://docs.docker.com/compose/install/) should be installed and available to follow the below [docker quick start guide](#docker-quick-start).
+To simplify running freqtrade, [`docker-compose`](https://docs.docker.com/compose/install/) should be installed and available to follow the below [docker quick start guide](#docker-quick-start).
 
 ## Freqtrade with docker-compose
 
-Freqtrade provides an official Docker image on [Dockerhub](https://hub.docker.com/r/freqtradeorg/freqtrade/), as well as a [docker-compose file](https://github.com/freqtrade/freqtrade/blob/develop/docker-compose.yml) ready for usage.
+Freqtrade provides an official Docker image on [Dockerhub](https://hub.docker.com/r/freqtradeorg/freqtrade/), as well as a [docker-compose file](https://github.com/freqtrade/freqtrade/blob/stable/docker-compose.yml) ready for usage.
 
 !!! Note
     - The following section assumes that `docker` and `docker-compose` are installed and available to the logged in user.
@@ -22,48 +22,23 @@ Freqtrade provides an official Docker image on [Dockerhub](https://hub.docker.co
 
 ### Docker quick start
 
-Create a new directory and place the [docker-compose file](https://github.com/freqtrade/freqtrade/blob/develop/docker-compose.yml) in this directory.
+Create a new directory and place the [docker-compose file](https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml) in this directory.
 
-=== "PC/MAC/Linux"
-    ``` bash
-    mkdir ft_userdata
-    cd ft_userdata/
-    # Download the docker-compose file from the repository
-    curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
+``` bash
+mkdir ft_userdata
+cd ft_userdata/
+# Download the docker-compose file from the repository
+curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
 
-    # Pull the freqtrade image
-    docker-compose pull
+# Pull the freqtrade image
+docker-compose pull
 
-    # Create user directory structure
-    docker-compose run --rm freqtrade create-userdir --userdir user_data
+# Create user directory structure
+docker-compose run --rm freqtrade create-userdir --userdir user_data
 
-    # Create configuration - Requires answering interactive questions
-    docker-compose run --rm freqtrade new-config --config user_data/config.json
-    ```
-
-=== "RaspberryPi"
-    ``` bash
-    mkdir ft_userdata
-    cd ft_userdata/
-    # Download the docker-compose file from the repository
-    curl https://raw.githubusercontent.com/freqtrade/freqtrade/stable/docker-compose.yml -o docker-compose.yml
-
-    # Pull the freqtrade image
-    docker-compose pull
-
-    # Create user directory structure
-    docker-compose run --rm freqtrade create-userdir --userdir user_data
-
-    # Create configuration - Requires answering interactive questions
-    docker-compose run --rm freqtrade new-config --config user_data/config.json
-    ```
-
-    !!! Note "Change your docker Image"
-        You have to change the docker image in the docker-compose file for your Raspberry build to work properly.
-        ``` yml
-        image: freqtradeorg/freqtrade:stable_pi
-        # image: freqtradeorg/freqtrade:develop_pi
-        ```
+# Create configuration - Requires answering interactive questions
+docker-compose run --rm freqtrade new-config --config user_data/config.json
+```
 
 The above snippet creates a new directory called `ft_userdata`, downloads the latest compose file and pulls the freqtrade image.
 The last 2 steps in the snippet create the directory with `user_data`, as well as (interactively) the default configuration based on your selections.
@@ -81,7 +56,7 @@ The last 2 steps in the snippet create the directory with `user_data`, as well a
 
 The `SampleStrategy` is run by default.
 
-!!! Warning "`SampleStrategy` is just a demo!"
+!!! Danger "`SampleStrategy` is just a demo!"
     The `SampleStrategy` is there for your reference and give you ideas for your own strategy.
     Please always backtest your strategy and use dry-run for some time before risking real money!
     You will find more information about Strategy development in the [Strategy documentation](strategy-customization.md).
@@ -131,6 +106,10 @@ Advanced users may edit the docker-compose file further to include all possible 
 
 All freqtrade arguments will be available by running `docker-compose run --rm freqtrade <command> <optional arguments>`.
 
+!!! Warning "`docker-compose` for trade commands"
+    Trade commands (`freqtrade trade <...>`) should not be ran via `docker-compose run` - but should use `docker-compose up -d` instead.
+    This makes sure that the container is properly started (including port forwardings) and will make sure that the container will restart after a system reboot.
+
 !!! Note "`docker-compose run --rm`"
     Including `--rm` will remove the container after completion, and is highly recommended for all modes except trading mode (running with `freqtrade trade` command).
 
@@ -156,8 +135,8 @@ Head over to the [Backtesting Documentation](backtesting.md) to learn more.
 
 ### Additional dependencies with docker-compose
 
-If your strategy requires dependencies not included in the default image (like [technical](https://github.com/freqtrade/technical)) - it will be necessary to build the image on your host.
-For this, please create a Dockerfile containing installation steps for the additional dependencies (have a look at [docker/Dockerfile.technical](https://github.com/freqtrade/freqtrade/blob/develop/docker/Dockerfile.technical) for an example).
+If your strategy requires dependencies not included in the default image - it will be necessary to build the image on your host.
+For this, please create a Dockerfile containing installation steps for the additional dependencies (have a look at [docker/Dockerfile.custom](https://github.com/freqtrade/freqtrade/blob/develop/docker/Dockerfile.custom) for an example).
 
 You'll then also need to modify the `docker-compose.yml` file and uncomment the build step, as well as rename the image to avoid naming collisions.
 
