@@ -12,7 +12,7 @@ Few pointers for contributions:
 - New features need to contain unit tests, must conform to PEP8 (max-line-length = 100) and should be documented with the introduction PR.
 - PR's can be declared as `[WIP]` - which signify Work in Progress Pull Requests (which are not finished).
 
-If you are unsure, discuss the feature on our [discord server](https://discord.gg/MA9v74M), on [Slack](https://join.slack.com/t/highfrequencybot/shared_invite/zt-mm786y93-Fxo37glxMY9g8OQC5AoOIw) or in a [issue](https://github.com/freqtrade/freqtrade/issues) before a PR.
+If you are unsure, discuss the feature on our [discord server](https://discord.gg/p7nuUNVfP7) or in a [issue](https://github.com/freqtrade/freqtrade/issues) before a Pull Request.
 
 ## Getting started
 
@@ -45,16 +45,24 @@ pytest tests/test_<file_name>.py::test_<method_name>
 
 ### 2. Test if your code is PEP8 compliant
 
-#### Run Flake8
+#### Run Ruff
 
 ```bash
-flake8 freqtrade tests scripts
+ruff check .
 ```
 
-We receive a lot of code that fails the `flake8` checks.
+We receive a lot of code that fails the `ruff` checks.
 To help with that, we encourage you to install the git pre-commit 
-hook that will warn you when you try to commit code that fails these checks. 
-Guide for installing them is [here](http://flake8.pycqa.org/en/latest/user/using-hooks.html).
+hook that will warn you when you try to commit code that fails these checks.
+
+you can manually run pre-commit with `pre-commit run -a`.
+
+##### Additional styles applied
+
+* Have docstrings on all public methods
+* Use double-quotes for docstrings
+* Multiline docstrings should be indented to the level of the first quote
+* Doc-strings should follow the reST format (`:param xxx: ...`, `:return: ...`, `:raises KeyError: ... `)
 
 ### 3. Test if all type-hints are correct
 
@@ -64,12 +72,12 @@ Guide for installing them is [here](http://flake8.pycqa.org/en/latest/user/using
 mypy freqtrade
 ```
 
-### 4. Ensure all imports are correct
+### 4. Ensure formatting is correct
 
-#### Run isort
+#### Run ruff
 
 ``` bash
-isort .
+ruff format .
 ```
 
 ## (Core)-Committer Guide
@@ -117,7 +125,7 @@ Exceptions:
 
 Contributors may be given commit privileges. Preference will be given to those with:
 
-1. Past contributions to Freqtrade and other related open-source projects. Contributions to Freqtrade include both code (both accepted and pending) and friendly participation in the issue tracker and Pull request reviews. Quantity and quality are considered.
+1. Past contributions to Freqtrade and other related open-source projects. Contributions to Freqtrade include both code (both accepted and pending) and friendly participation in the issue tracker and Pull request reviews. Both quantity and quality are considered.
 1. A coding style that the other core committers find simple, minimal, and clean.
 1. Access to resources for cross-platform development and testing.
 1. Time to devote to the project regularly.
