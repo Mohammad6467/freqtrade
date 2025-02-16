@@ -1,9 +1,13 @@
 # Edge positioning
 
-The `Edge Positioning` module uses probability to calculate your win rate and risk reward ratio. It will use these statistics to control your strategy trade entry points, position size and, stoploss. 
+The `Edge Positioning` module uses probability to calculate your win rate and risk reward ratio. It will use these statistics to control your strategy trade entry points, position size and, stoploss.
+
+!!! Danger "Deprecated functionality"
+    `Edge positioning` (or short Edge) is currently in maintenance mode only (we keep existing functionality alive) and should be considered as deprecated.
+    It will currently not receive new features until either someone stepped forward to take up ownership of that module - or we'll decide to remove edge from freqtrade.
 
 !!! Warning
-    `Edge positioning` is not compatible with dynamic (volume-based) whitelist.
+    When using `Edge positioning` with a dynamic whitelist (VolumePairList), make sure to also use `AgeFilter` and set it to at least `calculate_since_number_of_days` to avoid problems with missing data.
 
 !!! Note
     `Edge Positioning` only considers *its own* buy/sell/stoploss signals. It ignores the stoploss, trailing stoploss, and ROI settings in the strategy configuration file.
@@ -14,7 +18,7 @@ The `Edge Positioning` module uses probability to calculate your win rate and ri
 
 Trading strategies are not perfect. They are frameworks that are susceptible to the market and its indicators. Because the market is not at all predictable, sometimes a strategy will win and sometimes the same strategy will lose.
 
-To obtain an edge in the market, a strategy has to make more money than it loses. Making money in trading is not only about *how often* the strategy makes or loses money. 
+To obtain an edge in the market, a strategy has to make more money than it loses. Making money in trading is not only about *how often* the strategy makes or loses money.
 
 !!! tip "It doesn't matter how often, but how much!"
     A bad strategy might make 1 penny in *ten* transactions but lose 1 dollar in *one* transaction. If one only checks the number of winning trades, it would be misleading to think that the strategy is actually making a profit.
@@ -133,7 +137,7 @@ $$ R = \frac{\text{average_profit}}{\text{average_loss}} = \frac{\mu_{win}}{\mu_
 
 ### Expectancy
 
-By combining the Win Rate $W$ and and the Risk Reward ratio $R$ to create an expectancy ratio $E$. A expectance ratio is the expected return of the investment made in a trade. We can compute the value of $E$ as follows:
+By combining the Win Rate $W$ and the Risk Reward ratio $R$ to create an expectancy ratio $E$. A expectance ratio is the expected return of the investment made in a trade. We can compute the value of $E$ as follows:
 
 $$E = R * W - L$$
 
@@ -211,57 +215,7 @@ Let's say the stake currency is **ETH** and there is $10$ **ETH** on the wallet.
 
 ## Edge command reference
 
-```
-usage: freqtrade edge [-h] [-v] [--logfile FILE] [-V] [-c PATH] [-d PATH]
-                      [--userdir PATH] [-s NAME] [--strategy-path PATH]
-                      [-i TIMEFRAME] [--timerange TIMERANGE]
-                      [--max-open-trades INT] [--stake-amount STAKE_AMOUNT]
-                      [--fee FLOAT] [--stoplosses STOPLOSS_RANGE]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i TIMEFRAME, --timeframe TIMEFRAME, --ticker-interval TIMEFRAME
-                        Specify ticker interval (`1m`, `5m`, `30m`, `1h`,
-                        `1d`).
-  --timerange TIMERANGE
-                        Specify what timerange of data to use.
-  --max-open-trades INT
-                        Override the value of the `max_open_trades`
-                        configuration setting.
-  --stake-amount STAKE_AMOUNT
-                        Override the value of the `stake_amount` configuration
-                        setting.
-  --fee FLOAT           Specify fee ratio. Will be applied twice (on trade
-                        entry and exit).
-  --stoplosses STOPLOSS_RANGE
-                        Defines a range of stoploss values against which edge
-                        will assess the strategy. The format is "min,max,step"
-                        (without any space). Example:
-                        `--stoplosses=-0.01,-0.1,-0.001`
-
-Common arguments:
-  -v, --verbose         Verbose mode (-vv for more, -vvv to get all messages).
-  --logfile FILE        Log to the file specified. Special values are:
-                        'syslog', 'journald'. See the documentation for more
-                        details.
-  -V, --version         show program's version number and exit
-  -c PATH, --config PATH
-                        Specify configuration file (default:
-                        `userdir/config.json` or `config.json` whichever
-                        exists). Multiple --config options may be used. Can be
-                        set to `-` to read config from stdin.
-  -d PATH, --datadir PATH
-                        Path to directory with historical backtesting data.
-  --userdir PATH, --user-data-dir PATH
-                        Path to userdata directory.
-
-Strategy arguments:
-  -s NAME, --strategy NAME
-                        Specify strategy class name which will be used by the
-                        bot.
-  --strategy-path PATH  Specify additional strategy lookup path.
-
-```
+--8<-- "commands/edge.md"
 
 ## Configurations
 
